@@ -1,0 +1,43 @@
+security:
+    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+    providers:
+            # utilisé pour recharger l'utilisateur à partir de la session et d'autres fonctionnalités (par exemple, switch_user)
+        users_in_memory: { memory: null }
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            lazy: true
+            provider: users_in_memory
+
+            # activer différents moyens d'authentifier
+            # https://symfony.com/doc/current/security.html#the-firewall
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Contrôle de l'accès pour des sections importantes de votre site
+    # Notez que seul le premier contrôle d'accès qui correspondra sera utilisé
+    access_control:
+        - { path: ^/public, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }
+
+when@test:
+    security:
+        password_hashers:
+            # Par défaut, les générateurs de mot de passe sont ressources et coûteux. Cela
+            # est important pour générer des hachages de mot de passe sécurisés. Cependant, dans les tests,
+            # les hachages sécurisés ne sont pas importants, consomment des ressources et augmentent
+            # les temps de test. Le suivant réduit le facteur de travail aux valeurs les plus basses possibles.
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4 # Valeur minimale pour bcrypt
+                time_cost: 3 # Valeur minimale pour argon
+                memory_cost: 10 # Valeur minimale pour argon
+
+
