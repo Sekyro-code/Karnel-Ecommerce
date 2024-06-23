@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produits
+{% endblock %}
+
+{% block content %}
+
+
+	<div class="row">
+		<div class="col-md-2 content-search">
+			{{form(form)}}
+			</div>
+			<div class="col-md-10">
+				<h3>Nos Produits</h3>
+
+				<div class="row content">
+					{% for product in products %}
+						<div class="col-md-4 content-item">
+
+							<div class="product-item text-center">
+								<a href="{{ path('app_product_show', { 'slug' : product.slug }) }}" class="link-product">
+									<img src="/uploads/products/{{product.picture}}" alt="{{product.picture}}" class=" img-fluid img-products">
+									<h5>
+										{{product.name}}
+									</h5>
+									<span class="span-sub">
+										{{product.subtitle}}
+									</span>
+									<span class="span-price">
+										{{(product.price / 100)|number_format(2)}}
+										€
+									</span>
+								</a>
+							</div>
+
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+
+	{% endblock %}
